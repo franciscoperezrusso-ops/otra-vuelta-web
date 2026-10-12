@@ -5,6 +5,14 @@
 (() => {
   'use strict';
 
+  // iOS 13 y anteriores no tienen replaceChildren (los iPhone 6 y 5s se quedaron en iOS 12).
+  if (!Element.prototype.replaceChildren) {
+    Element.prototype.replaceChildren = function replaceChildren(...nodos) {
+      this.textContent = '';
+      this.append(...nodos);
+    };
+  }
+
   /* ---------- Configuración ---------- */
 
   // WhatsApp de la tienda: formato internacional, solo dígitos (54 + 9 + característica + número).
@@ -52,6 +60,7 @@
   const CONDICIONES = { usado: 'Usado', nuevo: 'Nuevo' };
 
   const RE_ID = /^[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*$/;
+  const RE_ID_PARECIDO = /^[0-9]{4}-/;
   const RE_FOTO = /^0[1-6]\.webp$/;
   const RE_ML = /^https:\/\/(www|articulo)\.mercadolibre\.com\.ar\//;
   const RE_FECHA = /^(\d{4})-(\d{2})-(\d{2})$/;
@@ -215,8 +224,11 @@
 
   /* ---------- WhatsApp ---------- */
 
+  // Saca mitades sueltas de un emoji partido: con ellas encodeURIComponent falla.
+  const sinSueltos = (texto) => Array.from(texto).filter((c) => c.length > 1 || c < '\uD800' || c > '\uDFFF').join('');
+
   function mensajeWhatsApp(p) {
-    return `Hola, Otra Vuelta. Me interesa: ${p.nombre} (${p.id}). ¿Sigue disponible?`;
+    return sinSueltos(`Hola, Otra Vuelta. Me interesa: ${p.nombre} (${p.id}). ¿Sigue disponible?`);
   }
 
   function urlWhatsApp(p) {
@@ -241,8 +253,8 @@
 
   /* ---------- Piezas ---------- */
 
-  function chipsDe(p) {
-    return el('p', { class: 'chips' },
+  function chipsDe(p, id) {
+    return el('p', { class: 'chips', id },
       el('span', { class: `chip chip-${p.estado}` }, ESTADOS[p.estado]),
       ' ',
       el('span', { class: `chip chip-${p.condicion}` }, CONDICIONES[p.condicion]));
@@ -265,6 +277,7 @@
   function tarjeta(p, i) {
     const href = `#${p.id}`;
     const idNombre = `nombre-${p.id}`;
+    const idChips = `chips-${p.id}`;
     const portada = p.fotos[0];
     const vendido = p.estado === 'vendido';
     return el('article', { class: vendido ? 'tarjeta es-vendido' : 'tarjeta' },
@@ -278,9 +291,10 @@
           fetchpriority: i === 0 ? 'high' : null,
           decoding: 'async',
         })),
-      chipsDe(p),
+      chipsDe(p, idChips),
       el('div', { class: 'tarjeta-titulo' },
-        el('h2', { class: 'tarjeta-nombre', id: idNombre }, el('a', { href, 'data-producto': p.id }, p.nombre)),
+        el('h2', { class: 'tarjeta-nombre', id: idNombre },
+          el('a', { href, 'data-producto': p.id, 'aria-describedby': idChips }, p.nombre)),
         el('p', { class: 'categoria' }, etiquetaCategoria(p.categoria))),
       precioDe(p),
       vendido ? el('p', { class: 'salio' }, 'Este ya salió.') : botonWhatsApp(p, false, idNombre));
@@ -381,14 +395,29 @@
       selector.value = filtros.precio;
       conteo.textContent = plural(resultado.length);
       quitar.hidden = !filtros.categoria && filtros.precio === 'todos';
+      const tarjetas = [];
+      resultado.forEach((p, i) => {
+        try {
+          tarjetas.push(tarjeta(p, i));
+        } catch (error) {
+          console.warn(`Otra Vuelta: no se pudo dibujar ${p.id}.`, error);
+        }
+      });
       lista.replaceChildren(...(resultado.length
-        ? resultado.map(tarjeta)
+        ? tarjetas
         : [el('div', { class: 'sin-resultados' },
           el('p', {}, 'No hay nada con esos filtros.'),
           el('button', { type: 'button', class: 'link-accion', onclick: limpiar }, 'Quitar filtros'))]));
     }
 
     actualizar();
+
+    // En celular la fila de chips scrollea: al volver de una ficha, el chip elegido queda a la vista.
+    const elegido = chips.find((chip) => chip.getAttribute('aria-pressed') === 'true');
+    if (elegido && elegido !== chips[0]) {
+      const fila = elegido.parentNode;
+      fila.scrollLeft = elegido.offsetLeft - fila.offsetLeft - 20;
+    }
   }
 
   /* ---------- Vista: ficha ---------- */
@@ -428,6 +457,14 @@
 
     function marcar(i) {
       actual = i;
+      const activa = miniaturas[i];
+      const fila = activa && activa.parentNode;
+      if (fila && fila.isConnected) {
+        const caja = fila.getBoundingClientRect();
+        const borde = activa.getBoundingClientRect();
+        if (borde.left < caja.left) fila.scrollLeft -= caja.left - borde.left + 6;
+        else if (borde.right > caja.right) fila.scrollLeft += borde.right - caja.right + 6;
+      }
       contadorVisible.textContent = `${i + 1} / ${total}`;
       contadorLeido.textContent = `Foto ${i + 1} de ${total}`;
       miniaturas.forEach((boton, j) => {
@@ -596,8 +633,11 @@
     } catch (e) {
       hash = '';
     }
+    // Un link pegado con mayúsculas o con puntuación al final ("…patrick).") abre igual la ficha;
+    // si parece un id pero no existe, la ficha avisa "Ese producto no está más.".
+    hash = hash.trim().toLowerCase().replace(/[^a-z0-9]+$/, '');
     if (hash === 'a-estrenar') return { tipo: 'lista', pestana: 'a-estrenar' };
-    if (RE_ID.test(hash)) return { tipo: 'ficha', id: hash };
+    if (RE_ID.test(hash) || RE_ID_PARECIDO.test(hash)) return { tipo: 'ficha', id: hash };
     return { tipo: 'lista', pestana: 'con-historia' };
   }
 
@@ -607,7 +647,19 @@
     if (anterior && anterior.tipo === 'lista') estado.scroll[anterior.pestana] = window.scrollY;
 
     if (ruta.tipo === 'ficha') {
-      estado.volverConHistorial = Boolean(anterior && anterior.tipo === 'lista');
+      // La entrada del historial recuerda si a esta ficha se llegó desde la lista:
+      // así "Volver" sigue andando después de Atrás, Adelante o recargar.
+      const marca = history.state && history.state.otraVuelta;
+      if (marca) {
+        estado.volverConHistorial = marca.desdeLista === true;
+      } else {
+        estado.volverConHistorial = Boolean(anterior && anterior.tipo === 'lista');
+        try {
+          history.replaceState({ otraVuelta: { desdeLista: estado.volverConHistorial } }, '');
+        } catch (e) {
+          estado.volverConHistorial = false;
+        }
+      }
       estado.vista = ruta;
       mostrarFicha(ruta.id, Boolean(anterior));
     } else {
@@ -616,14 +668,28 @@
       estado.vista = ruta;
       mostrarLista(ruta.pestana);
       if (desdeFicha) {
-        window.scrollTo(0, estado.scroll[ruta.pestana] || 0);
-        const link = main.querySelector(`a[data-producto="${CSS.escape(anterior.id)}"]`);
-        if (link) link.focus({ preventScroll: true });
+        const y = estado.scroll[ruta.pestana];
+        window.scrollTo(0, y || 0);
+        // Si la lista nunca se vio (se entró por el link de la ficha), el foco va al contenido, arriba.
+        const link = y === undefined ? null : main.querySelector(`a[data-producto="${CSS.escape(anterior.id)}"]`);
+        (link || main).focus({ preventScroll: true });
       } else if (anterior) {
         window.scrollTo(0, 0);
+        const activo = document.activeElement;
+        if (!activo || activo === document.body || !activo.isConnected) main.focus({ preventScroll: true });
       }
     }
     main.removeAttribute('aria-busy');
+  }
+
+  // Un error al dibujar no deja la página en blanco.
+  function navegarSeguro() {
+    try {
+      navegar();
+    } catch (error) {
+      console.error('Otra Vuelta: error al dibujar la vista.', error);
+      mostrarError();
+    }
   }
 
   function mostrarError() {
@@ -648,7 +714,7 @@
       return;
     }
     estado.listo = true;
-    navegar();
+    navegarSeguro();
   }
 
   /* ---------- Arranque ---------- */
@@ -661,7 +727,7 @@
   else modoLista(rutaInicial.pestana);
 
   window.addEventListener('hashchange', () => {
-    if (estado.listo) navegar();
+    if (estado.listo) navegarSeguro();
   });
 
   $('saltar').addEventListener('click', (e) => {
@@ -674,16 +740,24 @@
     if (!estado.listo || ruta.tipo !== 'lista' || ruta.pestana !== 'con-historia') return;
     e.preventDefault();
     reiniciarFiltros('con-historia');
-    mostrarLista('con-historia');
+    try {
+      mostrarLista('con-historia');
+    } catch (error) {
+      console.error('Otra Vuelta: error al dibujar la vista.', error);
+      mostrarError();
+    }
     window.scrollTo(0, 0);
   });
 
   volver.addEventListener('click', (e) => {
-    if (estado.volverConHistorial && history.length > 1) {
+    if (estado.volverConHistorial) {
       e.preventDefault();
       history.back();
     }
   });
+
+  // iOS solo muestra el estado presionado (:active, ladrillo oscuro) si la página escucha toques.
+  document.addEventListener('touchstart', () => {}, { passive: true });
 
   cargar();
 })();

@@ -30,7 +30,8 @@
   --margen: 20px;
   --ancho-max: 1200px;
 
-  color-scheme: light;
+  /* "only": que el modo oscuro automático de Chrome no oscurezca la página (un solo tema, brand.md §6). */
+  color-scheme: only light;
 }
 
 @media (min-width: 720px) {
@@ -363,6 +364,8 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Safari pierde el recorte redondeado del contenedor cuando la foto tiene filtro (vendido). */
+  border-radius: inherit;
 }
 
 .chips {
@@ -876,6 +879,24 @@ main {
   line-height: 1.5;
   color: var(--tinta-2);
   text-align: center;
+}
+
+/* Con mouse la fila de miniaturas muestra su barra: sin deslizar con el dedo, es la forma de llegar a las últimas fotos. */
+@media (hover: hover) and (pointer: fine) {
+  .miniaturas {
+    scrollbar-width: thin;
+    scrollbar-color: var(--tinta-2) transparent;
+  }
+
+  .miniaturas::-webkit-scrollbar {
+    display: block;
+    height: 8px;
+  }
+
+  .miniaturas::-webkit-scrollbar-thumb {
+    border-radius: var(--radio-chip);
+    background: var(--tinta-2);
+  }
 }
 
 /* ---------- Hover (solo con mouse) ---------- */
