@@ -1,0 +1,1095 @@
+/* Otra Vuelta · estilos v1
+   Mobile-first: la base es celular; escritorio entra por min-width 720 y 900.
+   Referencias: brand.md (paleta y tipografías) y diseno.md (tokens, componentes y medidas). */
+
+:root {
+  --papel: #F7F2EA;
+  --blanco: #FFFFFF;
+  --tinta: #1E1A17;
+  --tinta-2: #5F5852;
+  --borde: #E4DCD1;
+  --ladrillo: #B9472A;
+  --ladrillo-oscuro: #8E3520;
+  --botella: #2E5E4E;
+  --disponible-fondo: #DDEBE2;
+  --disponible-texto: #1F4D3D;
+  --reservado-fondo: #FBE8C8;
+  --reservado-texto: #7A4B00;
+  --vendido-fondo: #E7E2DC;
+  --vendido-texto: #5F5852;
+
+  --radio-tarjeta: 16px;
+  --radio-foto: 12px;
+  --radio-boton: 12px;
+  --radio-chip: 999px;
+  --foto-fondo: var(--borde);
+
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --margen: 20px;
+  --ancho-max: 1200px;
+
+  color-scheme: light;
+}
+
+@media (min-width: 720px) {
+  :root { --margen: 40px; }
+}
+
+/* ---------- Base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--papel);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+h1, h2, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; }
+svg { flex: none; }
+a { color: var(--ladrillo); }
+button, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+[hidden] { display: none !important; }
+
+.sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Foco de teclado ---------- */
+
+:focus-visible {
+  outline: 3px solid var(--tinta);
+  outline-offset: 2px;
+}
+
+/* Sobre ladrillo o botella el contorno va en papel, por dentro. */
+.boton-wa:focus-visible,
+.boton-link:focus-visible,
+.pestana[aria-current="page"]:focus-visible {
+  outline-color: var(--papel);
+  outline-offset: -6px;
+}
+
+/* Destinos de foco programático (no son controles). */
+[tabindex="-1"]:focus { outline: none; }
+
+.saltar {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  padding: 10px 16px;
+  border-radius: var(--radio-boton);
+  background: var(--tinta);
+  color: var(--papel);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.saltar:not(:focus) {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Encabezado y pestañas ---------- */
+
+.encabezado {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px var(--margen) 0;
+}
+
+.marca-bloque {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.marca {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.marca a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  /* 44 px de área de toque sin cambiar el alto visible. */
+  margin: -7px 0;
+  padding: 7px 0;
+  color: var(--tinta);
+  text-decoration: none;
+}
+
+.isotipo {
+  width: 24px;
+  height: 24px;
+  color: var(--ladrillo);
+}
+
+.lema {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--tinta-2);
+}
+
+.pestanas {
+  display: flex;
+  gap: 8px;
+}
+
+.pestana {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-chip);
+  background: var(--blanco);
+  color: var(--tinta);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.pestana[aria-current="page"] {
+  border-color: var(--ladrillo);
+  background: var(--ladrillo);
+  color: var(--blanco);
+}
+
+/* ---------- Contenido ---------- */
+
+main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.aviso-js {
+  padding: 32px var(--margen);
+  text-align: center;
+}
+
+/* ---------- Filtros ---------- */
+
+.filtros {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 16px;
+}
+
+.chips-categoria {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  /* El padding vertical deja ver el contorno de foco; el margen negativo lo compensa. */
+  margin: -6px 0;
+  padding: 6px 0 6px var(--margen);
+  scrollbar-width: none;
+}
+
+.chips-categoria::-webkit-scrollbar { display: none; }
+
+/* Margen final de la fila con scroll (el padding derecho no siempre cuenta). */
+.chips-categoria::after {
+  content: "";
+  flex: 0 0 calc(var(--margen) - 8px);
+}
+
+.chip-filtro {
+  flex: none;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-chip);
+  background: var(--blanco);
+  color: var(--tinta);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.chip-filtro[aria-pressed="true"] {
+  border-color: var(--tinta);
+  background: var(--tinta);
+  color: var(--papel);
+  font-weight: 600;
+}
+
+.filtros-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 12px;
+  padding: 0 var(--margen);
+}
+
+.selector-precio {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+
+/* 16 px: con menos, el iPhone hace zoom al tocar el selector. */
+.selector-precio select {
+  min-height: 44px;
+  padding: 0 42px 0 16px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-chip);
+  background: var(--blanco);
+  color: var(--tinta);
+  font-size: 16px;
+  line-height: 1.2;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  /* Donde se soporta, el ancho sigue a la opción elegida y no a la más larga. */
+  field-sizing: content;
+}
+
+.selector-precio svg {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.contador {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  column-gap: 4px;
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--tinta-2);
+  white-space: nowrap;
+}
+
+.quitar-filtros {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.link-accion {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ladrillo);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contador .link-accion { font-size: 13px; }
+
+/* ---------- Lista y tarjetas ---------- */
+
+.lista {
+  display: grid;
+  gap: 16px;
+  padding: 16px var(--margen) 0;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-tarjeta);
+  background: var(--blanco);
+}
+
+.tarjeta-foto {
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radio-foto);
+  background: var(--foto-fondo);
+}
+
+.tarjeta-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: var(--radio-chip);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.chip-disponible { background: var(--disponible-fondo); color: var(--disponible-texto); }
+.chip-reservado { background: var(--reservado-fondo); color: var(--reservado-texto); }
+.chip-vendido { background: var(--vendido-fondo); color: var(--vendido-texto); }
+.chip-usado { border: 1px solid var(--borde); color: var(--tinta); }
+.chip-nuevo { background: var(--botella); color: var(--blanco); }
+
+.tarjeta-titulo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tarjeta-nombre {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.tarjeta-nombre a {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  /* 44 px de área de toque sin cambiar el alto visible. */
+  margin: -10px 0;
+  padding: 10px 0;
+  color: var(--tinta);
+  text-decoration: none;
+}
+
+.tarjeta-nombre a:focus-visible { outline-offset: -5px; }
+
+.categoria {
+  font-size: 13px;
+  color: var(--tinta-2);
+}
+
+.precio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.precio-actual {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.precio-anterior {
+  font-size: 15px;
+  color: var(--tinta-2);
+}
+
+.boton-wa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: var(--radio-boton);
+  background: var(--ladrillo);
+  color: var(--blanco);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.boton-wa svg {
+  width: 20px;
+  height: 20px;
+}
+
+.boton-wa:active { background: var(--ladrillo-oscuro); }
+
+.salio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  font-size: 15px;
+  color: var(--tinta-2);
+}
+
+/* Vendido: foto en gris, nombre y precio en tinta-2. */
+.es-vendido .tarjeta-foto img,
+.es-vendido .carrusel img,
+.es-vendido .miniatura img {
+  filter: grayscale(1);
+  opacity: 0.85;
+}
+
+.es-vendido .tarjeta-nombre a,
+.es-vendido .precio-actual,
+.es-vendido .ficha-nombre {
+  color: var(--tinta-2);
+}
+
+.sin-resultados {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 32px 0 8px;
+  text-align: center;
+}
+
+.sin-resultados .link-accion { font-size: 15px; }
+
+/* ---------- Estados vacíos ---------- */
+
+.vacio {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px;
+  text-align: center;
+}
+
+.vacio-caja {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 300px;
+}
+
+.vacio-circulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--disponible-fondo);
+  color: var(--botella);
+}
+
+.vacio-circulo svg {
+  width: 34px;
+  height: 34px;
+}
+
+.vacio h1,
+.vacio h2 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.vacio p { color: var(--tinta-2); }
+
+.boton-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--radio-boton);
+  background: var(--ladrillo);
+  color: var(--blanco);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.boton-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+.boton-link:active { background: var(--ladrillo-oscuro); }
+
+/* ---------- Quiénes somos ---------- */
+
+.quienes { padding: 24px var(--margen) 0; }
+
+.quienes-caja {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-tarjeta);
+  background: var(--blanco);
+}
+
+.quienes h2 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.quienes p {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ---------- Ficha de producto ---------- */
+
+.barra-ficha { padding: 8px var(--margen) 0; }
+
+.marca-chica { display: none; }
+
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--ladrillo);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.volver svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ficha {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 4px var(--margen) 0;
+}
+
+.galeria {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 560px;
+  min-width: 0;
+}
+
+.galeria-marco { position: relative; }
+
+.carrusel {
+  display: flex;
+  aspect-ratio: 1 / 1;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  border-radius: 16px;
+  background: var(--foto-fondo);
+  scrollbar-width: none;
+}
+
+.carrusel::-webkit-scrollbar { display: none; }
+
+.carrusel img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.contador-fotos {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 3px 10px;
+  border-radius: var(--radio-chip);
+  background: rgba(247, 242, 234, 0.94);
+  color: var(--tinta);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.miniaturas {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  margin: -6px;
+  padding: 6px;
+  scrollbar-width: none;
+}
+
+.miniaturas::-webkit-scrollbar { display: none; }
+
+.miniatura {
+  flex: none;
+  width: 78px;
+  height: 78px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: var(--foto-fondo);
+}
+
+.miniatura[aria-current="true"] { border: 2px solid var(--tinta); }
+
+.miniatura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ficha-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.ficha-cabecera {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ficha-titulo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ficha-nombre {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  font-size: 13px;
+  color: var(--tinta-2);
+}
+
+.precio-ficha { gap: 4px 12px; }
+
+.precio-ficha .precio-actual {
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.precio-ficha .precio-anterior { font-size: 17px; }
+
+.boton-wa.grande {
+  min-height: 52px;
+  font-size: 17px;
+}
+
+.boton-wa.grande svg {
+  width: 22px;
+  height: 22px;
+}
+
+.nota-reservado {
+  font-size: 13px;
+  color: var(--tinta-2);
+}
+
+.mensaje-caja {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-boton);
+  background: var(--blanco);
+}
+
+.mensaje-etiqueta {
+  font-size: 13px;
+  color: var(--tinta-2);
+}
+
+.mensaje {
+  font-size: 15px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.descripcion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 640px;
+  overflow-wrap: anywhere;
+}
+
+.secciones {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+
+.seccion h2 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.medidas { font-variant-numeric: tabular-nums; }
+
+.lista-iconos {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lista-iconos li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.lista-iconos svg {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+}
+
+.icono-tilde { color: var(--botella); }
+.icono-aviso { color: var(--tinta-2); }
+
+.link-ml {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--ladrillo);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link-ml svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Caja de "Este ya salió" y de producto que no existe. */
+.caja-aviso {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-tarjeta);
+  background: var(--blanco);
+}
+
+.caja-aviso h1 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ficha-vacia { padding-top: 16px; }
+
+/* ---------- Pie ---------- */
+
+.pie {
+  padding: 32px var(--margen) 28px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--tinta-2);
+  text-align: center;
+}
+
+/* ---------- Hover (solo con mouse) ---------- */
+
+@media (hover: hover) {
+  .boton-wa:hover,
+  .boton-link:hover { background: var(--ladrillo-oscuro); }
+
+  .pestana:not([aria-current="page"]):hover,
+  .chip-filtro:not([aria-pressed="true"]):hover,
+  .selector-precio select:hover { border-color: var(--tinta-2); }
+
+  .marca a:hover span,
+  .marca-chica:hover span,
+  .tarjeta-nombre a:hover,
+  .volver:hover span,
+  .link-ml:hover,
+  .link-accion:hover { text-decoration: underline; }
+}
+
+/* ---------- Escritorio chico (≥ 720 px) ---------- */
+
+@media (min-width: 720px) {
+  .encabezado {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px 32px;
+    width: 100%;
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding: 32px var(--margen) 20px;
+  }
+
+  .marca { font-size: 32px; }
+  .marca a { gap: 12px; }
+
+  .isotipo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .lema { font-size: 16px; }
+
+  .pestana {
+    flex: none;
+    padding: 0 24px;
+  }
+
+  .filtros {
+    gap: 12px;
+    width: 100%;
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding: 8px var(--margen) 0;
+  }
+
+  .chips-categoria {
+    flex-wrap: wrap;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+
+  .chips-categoria::after { display: none; }
+
+  .chip-filtro { min-height: 40px; }
+
+  .filtros-fila { padding: 0; }
+
+  .selector-precio select {
+    min-height: 40px;
+    font-size: 15px;
+  }
+
+  .lista {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding-top: 24px;
+  }
+
+  .tarjeta { padding: 16px; }
+
+  /* Precio y botón al fondo: los botones de una fila quedan alineados. */
+  .tarjeta .precio { margin-top: auto; }
+
+  .vacio {
+    width: 100%;
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding: 40px var(--margen);
+  }
+
+  .vacio-caja {
+    width: 100%;
+    max-width: 560px;
+    padding: 48px 40px;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+    background: var(--blanco);
+  }
+
+  .vacio-circulo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .vacio-circulo svg {
+    width: 38px;
+    height: 38px;
+  }
+
+  .vacio h1,
+  .vacio h2 { font-size: 26px; }
+  .vacio p { max-width: 380px; }
+
+  .quienes {
+    width: 100%;
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding-top: 32px;
+  }
+
+  .quienes-caja {
+    max-width: 760px;
+    padding: 24px 28px;
+  }
+
+  .quienes p { font-size: 16px; }
+
+  .barra-ficha {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    width: 100%;
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding: 24px var(--margen) 0;
+  }
+
+  .marca-chica {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    color: var(--tinta);
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.1;
+    text-decoration: none;
+  }
+
+  .marca-chica .isotipo {
+    width: 26px;
+    height: 26px;
+  }
+
+  .ficha {
+    gap: 32px;
+    width: 100%;
+    max-width: var(--ancho-max);
+    margin: 0 auto;
+    padding: 24px var(--margen) 0;
+  }
+
+  .boton-wa.grande { max-width: 400px; }
+  .mensaje-caja { max-width: 520px; }
+
+  .pie { padding: 40px var(--margen) 36px; }
+}
+
+/* ---------- Escritorio (≥ 900 px) ---------- */
+
+@media (min-width: 900px) {
+  .ficha {
+    display: grid;
+    grid-template-columns: minmax(0, 560px) minmax(320px, 1fr);
+    align-items: start;
+    gap: 48px;
+  }
+
+  .ficha-vacia { display: flex; }
+
+  .ficha-nombre {
+    font-size: 36px;
+    line-height: 1.15;
+  }
+
+  .precio-ficha .precio-actual { font-size: 32px; }
+  .precio-ficha .precio-anterior { font-size: 18px; }
+
+  .miniatura {
+    width: 100px;
+    height: 100px;
+  }
+
+  .secciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px 32px;
+  }
+}
+
+/* Con dos columnas de secciones: Medidas y Entrega arriba, las listas abajo. */
+@media (min-width: 1160px) {
+  .seccion-medidas { order: 1; }
+  .seccion-entrega { order: 2; }
+  .seccion-tiene { order: 3; }
+  .seccion-marcas { order: 4; }
+}

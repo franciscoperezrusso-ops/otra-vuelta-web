@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Otra Vuelta - data/products.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version_esquema", "actualizado", "productos"],
+  "properties": {
+    "version_esquema": { "const": 1 },
+    "actualizado": { "$ref": "#/$defs/fecha" },
+    "productos": { "type": "array", "items": { "$ref": "#/$defs/producto" } }
+  },
+  "$defs": {
+    "fecha": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "producto": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "nombre", "descripcion", "categoria", "condicion",
+        "estado", "precio", "moneda", "fotos", "fecha_publicacion"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 45 },
+        "nombre": { "type": "string", "minLength": 3, "maxLength": 60 },
+        "descripcion": { "type": "string", "minLength": 40, "maxLength": 800 },
+        "categoria": {
+          "enum": [
+            "muebles", "electrodomesticos", "tecnologia", "hogar", "deco",
+            "indumentaria", "libros-musica", "juguetes", "deportes",
+            "herramientas-jardin", "otros"
+          ]
+        },
+        "condicion": { "enum": ["usado", "nuevo"] },
+        "estado": { "enum": ["disponible", "reservado", "vendido"] },
+        "precio": { "type": "integer", "minimum": 1 },
+        "moneda": { "enum": ["ARS", "USD"] },
+        "fotos": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["archivo", "alt"],
+            "properties": {
+              "archivo": { "type": "string", "pattern": "^0[1-6]\\.webp$" },
+              "alt": { "type": "string", "minLength": 10, "maxLength": 120 }
+            }
+          }
+        },
+        "fecha_publicacion": { "$ref": "#/$defs/fecha" },
+        "marca": { "type": "string", "maxLength": 40 },
+        "modelo": { "type": "string", "maxLength": 40 },
+        "medidas": { "type": "string", "maxLength": 60 },
+        "detalles": { "type": "array", "maxItems": 6, "items": { "type": "string", "minLength": 3, "maxLength": 80 } },
+        "defectos": { "type": "array", "maxItems": 6, "items": { "type": "string", "minLength": 3, "maxLength": 120 } },
+        "entrega": { "type": "string", "maxLength": 80 },
+        "precio_anterior": { "type": "integer", "minimum": 1 },
+        "fecha_actualizacion": { "$ref": "#/$defs/fecha" },
+        "fecha_vendido": { "$ref": "#/$defs/fecha" },
+        "destacado": { "type": "boolean" },
+        "ml_url": { "type": "string", "pattern": "^https://(www|articulo)\\.mercadolibre\\.com\\.ar/" },
+        "etiquetas": {
+          "type": "array",
+          "maxItems": 8,
+          "items": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 20 }
+        }
+      },
+      "if": { "properties": { "estado": { "const": "vendido" } }, "required": ["estado"] },
+      "then": { "required": ["fecha_vendido"] }
+    }
+  }
+}
