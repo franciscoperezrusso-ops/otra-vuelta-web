@@ -1,7 +1,7 @@
 # Otra Vuelta · web
 
 Cosas de familia, listas para otra vuelta.
-Sitio: https://franciscoperezrusso-ops.github.io/otra-vuelta-web/
+Sitio: https://otra-vuelta.github.io/
 
 Sitio estático en GitHub Pages: HTML, CSS y JS planos, sin build y sin dependencias (solo las fuentes de Google Fonts). Se publica solo con cada commit a `main`.
 
@@ -35,9 +35,11 @@ Para sumar, cambiar o vender un producto se tocan **solo** `data/products.json` 
 
 ## Links
 
-- Inicio: `.../otra-vuelta-web/`
-- Pestañas: `.../otra-vuelta-web/#con-historia` y `.../otra-vuelta-web/#a-estrenar`
-- Ficha de un producto: `.../otra-vuelta-web/#<id>`, por ejemplo `#0001-lavarropas-patrick`
+- Inicio: `https://otra-vuelta.github.io/`
+- Pestañas: `https://otra-vuelta.github.io/#con-historia` y `https://otra-vuelta.github.io/#a-estrenar`
+- Ficha de un producto: `https://otra-vuelta.github.io/#<id>`, por ejemplo `#0001-lavarropas-patrick`
+
+El sitio se sirve en la raíz del dominio (el repo se llama `otra-vuelta.github.io`), por eso `404.html` usa rutas que empiezan con `/`.
 
 ## Lo que no va en este repo
 
