@@ -1,5 +1,59 @@
 {
   "version_esquema": 1,
-  "actualizado": "2026-10-12",
-  "productos": []
+  "actualizado": "2026-10-13",
+  "productos": [
+    {
+      "id": "0001-mesa-notebook-jd-lp1047a",
+      "nombre": "Mesa para notebook JD LP1047A con 2 ventiladores",
+      "descripcion": "Mesa plegable de aluminio para usar la notebook en la cama, el sillón, el piso o el escritorio. Los brazos giran 360° y se traban en el ángulo que quieras, y tiene dos ventiladores que se enchufan por USB a la notebook. La usamos dos o tres veces: anda perfecto, los ventiladores y las trabas funcionan bien.\n\nNo trae la bandeja para mouse que venía de fábrica. La superficie tiene unas rayitas finitas de guardarla en la caja, que se ven de cerca (foto 1).\n\nIncluye la caja original, con las esquinas algo gastadas.\n\nRetiro por Saavedra o Núñez (CABA), o envío a coordinar.",
+      "categoria": "tecnologia",
+      "condicion": "usado",
+      "estado": "disponible",
+      "precio": 24000,
+      "moneda": "ARS",
+      "marca": "JD",
+      "modelo": "LP1047A",
+      "medidas": "Bandeja de 42 × 27,5 cm; hasta 48 cm de alto",
+      "detalles": [
+        "Usada dos o tres veces, anda perfecto",
+        "2 ventiladores por USB, funcionan bien",
+        "Brazos de aluminio que giran 360° y se traban",
+        "Plegable y liviana: 1,4 kg",
+        "Incluye la caja original"
+      ],
+      "defectos": [
+        "No trae la bandeja para mouse que venía de fábrica",
+        "Rayitas finitas de la caja en la superficie, se ven de cerca (foto 1)"
+      ],
+      "entrega": "Retiro por Saavedra o Núñez (CABA), o envío a coordinar",
+      "fecha_publicacion": "2026-10-13",
+      "etiquetas": [
+        "notebook",
+        "mesa",
+        "cooler",
+        "plegable",
+        "aluminio",
+        "home-office",
+        "cama"
+      ],
+      "fotos": [
+        {
+          "archivo": "01.webp",
+          "alt": "Mesa para notebook JD negra de frente, con los dos ventiladores y las patas abiertas"
+        },
+        {
+          "archivo": "02.webp",
+          "alt": "Mesa para notebook vista de costado, con la bandeja inclinada y los brazos plegados"
+        },
+        {
+          "archivo": "03.webp",
+          "alt": "Brazos articulados de aluminio con los diales de ángulo azules y el logo JD"
+        },
+        {
+          "archivo": "04.webp",
+          "alt": "Lateral de la caja original con modelo LP1047A, material, medidas y peso"
+        }
+      ]
+    }
+  ]
 }
