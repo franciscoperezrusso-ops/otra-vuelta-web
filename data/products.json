@@ -9,7 +9,7 @@
       "categoria": "tecnologia",
       "condicion": "usado",
       "estado": "disponible",
-      "precio": 24000,
+      "precio": 22000,
       "moneda": "ARS",
       "marca": "JD",
       "modelo": "LP1047A",
@@ -27,6 +27,8 @@
       ],
       "entrega": "Retiro por Saavedra o Núñez (CABA), o envío a coordinar",
       "fecha_publicacion": "2026-10-13",
+      "fecha_actualizacion": "2026-10-13",
+      "ml_url": "https://articulo.mercadolibre.com.ar/MLA-4069662448-mesa-para-notebook-jd-lp1047a-plegable-aluminio-2-coolers-negro-_JM",
       "etiquetas": [
         "notebook",
         "mesa",
