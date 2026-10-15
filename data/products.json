@@ -1,6 +1,6 @@
 {
   "version_esquema": 1,
-  "actualizado": "2026-10-13",
+  "actualizado": "2026-10-15",
   "productos": [
     {
       "id": "0001-mesa-notebook-jd-lp1047a",
@@ -54,6 +54,57 @@
         {
           "archivo": "04.webp",
           "alt": "Lateral de la caja original con modelo LP1047A, material, medidas y peso"
+        }
+      ]
+    },
+    {
+      "id": "0002-router-nexxt-nebula-300-plus",
+      "nombre": "Router wifi Nexxt Nebula 300 plus con 3 antenas",
+      "descripcion": "Router wifi N de 2,4 GHz con 3 antenas fijas de 5 dBi, hasta 300 Mbps. Tiene 1 puerto WAN y 3 LAN de 10/100, y se puede usar como router, repetidor, punto de acceso o WISP. Andaba bien la última vez que se usó; hace un tiempo que está guardado y no lo volvimos a probar.\n\nNo trae el cable de red que venía de fábrica. La tapa negra brillante tiene rayones finitos de uso, que se ven en la foto 1.\n\nIncluye la fuente original, los folletos de Nexxt y la caja con su bandeja.\n\nRetiro por Saavedra o Núñez (CABA), o envío a coordinar.",
+      "categoria": "tecnologia",
+      "condicion": "usado",
+      "estado": "disponible",
+      "precio": 15000,
+      "moneda": "ARS",
+      "marca": "Nexxt",
+      "modelo": "ARN02304U9",
+      "medidas": "18,6 × 12 × 2,7 cm (ancho × prof. × alto), sin antenas",
+      "detalles": [
+        "Andaba bien; no lo probamos desde que se guardó",
+        "Wifi N de 2,4 GHz, hasta 300 Mbps",
+        "3 antenas fijas de 5 dBi",
+        "1 puerto WAN y 3 LAN de 10/100",
+        "Router, repetidor, punto de acceso o WISP",
+        "Incluye la fuente original y la caja con su bandeja"
+      ],
+      "defectos": [
+        "No trae el cable de red que venía de fábrica",
+        "Rayones finitos de uso en la tapa negra brillante (foto 1)"
+      ],
+      "entrega": "Retiro por Saavedra o Núñez (CABA), o envío a coordinar",
+      "fecha_publicacion": "2026-10-15",
+      "fecha_actualizacion": "2026-10-15",
+      "etiquetas": [
+        "router",
+        "wifi",
+        "nexxt",
+        "repetidor",
+        "access-point",
+        "wisp",
+        "internet"
+      ],
+      "fotos": [
+        {
+          "archivo": "01.webp",
+          "alt": "Router Nexxt negro con rayones finitos en la tapa, en la bandeja de su caja junto a la fuente"
+        },
+        {
+          "archivo": "02.webp",
+          "alt": "Frente de la caja del Nexxt Nebula 300 plus, modelo ARN02304U9"
+        },
+        {
+          "archivo": "03.webp",
+          "alt": "Dorso de la caja con las características del router y el esquema de los puertos"
         }
       ]
     }
